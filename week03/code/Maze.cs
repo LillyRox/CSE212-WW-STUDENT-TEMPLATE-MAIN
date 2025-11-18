@@ -32,16 +32,35 @@ public class Maze
     /// </summary>
     public void MoveLeft()
     {
-        // FILL IN CODE
-    }
+        var dir = _mazeMap[(_currX, _currY)];
+        if (!dir[0]) throw new InvalidOperationException("Can't go that way!");
 
+        int newX = _currX - 1;
+        int newY = _currY;
+
+        if (!_mazeMap.ContainsKey((newX, newY)))
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currX = newX;
+        _currY = newY;
+    }
     /// <summary>
     /// Check to see if you can move right.  If you can, then move.  If you
     /// can't move, throw an InvalidOperationException with the message "Can't go that way!".
     /// </summary>
     public void MoveRight()
     {
-        // FILL IN CODE
+        var dir = _mazeMap[(_currX, _currY)];
+        if (!dir[1]) throw new InvalidOperationException("Can't go that way!");
+
+        int newX = _currX + 1;
+        int newY = _currY;
+
+        if (!_mazeMap.ContainsKey((newX, newY)))
+            throw new InvalidOperationException("Can't go that way!");
+
+        _currX = newX;
+        _currY = newY;
     }
 
     /// <summary>
@@ -50,7 +69,17 @@ public class Maze
     /// </summary>
     public void MoveUp()
     {
-        // FILL IN CODE
+        var dir = _mazeMap[(_currX, _currY)];
+        if (!dir[2]) throw new InvalidOperationException("Can't go that way!");
+    
+        int newX = _currX;
+        int newY = _currY - 1;   // ← CORRECTO: UP es y-1
+    
+        if (!_mazeMap.ContainsKey((newX, newY)))
+            throw new InvalidOperationException("Can't go that way!");
+    
+        _currX = newX;
+        _currY = newY;
     }
 
     /// <summary>
@@ -59,7 +88,17 @@ public class Maze
     /// </summary>
     public void MoveDown()
     {
-        // FILL IN CODE
+        var dir = _mazeMap[(_currX, _currY)];
+        if (!dir[3]) throw new InvalidOperationException("Can't go that way!");
+    
+        int newX = _currX;
+        int newY = _currY + 1;   // ← CORRECTO: DOWN es y+1
+    
+        if (!_mazeMap.ContainsKey((newX, newY)))
+            throw new InvalidOperationException("Can't go that way!");
+    
+        _currX = newX;
+        _currY = newY;
     }
 
     public string GetStatus()

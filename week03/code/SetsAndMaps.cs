@@ -22,7 +22,32 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+
+        // To store all the seen words
+        var seen= new HashSet<string>();
+
+        // To store only the symetric pairs
+        var pairs = new List<(string, string)>();
+
+        // We check all words in the list of words
+        foreach (var word in words)
+        {
+            // We need to revert each word in the list of words
+            var revert = new string(new char[] { word[1], word[0] });
+            
+            if (seen.Contains(revert))
+            {
+            // We save the symetric pair
+                pairs.Add((revert, word));
+            }
+            else
+            {
+            // Else, we save the word in the list of seen words
+                seen.Add(word);
+            }
+        }
+
+        return pairs.Select(pair => $"{pair.Item1} & {pair.Item2}").ToArray();
     }
 
     /// <summary>
@@ -43,6 +68,19 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            if (fields.Length >= 4)
+            {
+                var degree = fields[3].Trim();
+                if (degrees.ContainsKey(degree))
+                {
+                    degrees[degree]++;
+                }
+                else
+                {
+                    degrees[degree] = 1;
+                }
+            }
+            
         }
 
         return degrees;
@@ -66,9 +104,36 @@ public static class SetsAndMaps
     /// </summary>
     public static bool IsAnagram(string word1, string word2)
     {
-        // TODO Problem 3 - ADD YOUR CODE HERE
+        //To delete space and to pass to lower case
+        var w1 = word1.Replace(" ", "").ToLower();
+        var w2 = word2.Replace(" ", "").ToLower();
+        //If the comparison is false, then they are not anagrams
+        if (w1.Length != w2.Length)
         return false;
+        //To count the letters in the words
+        var counts = new Dictionary<char, int>();
+
+        //To count the letters in the first word
+        foreach (var c in w1)
+        {
+            if (!counts.ContainsKey(c))
+            counts[c] = 0;
+            counts[c]++;
+        }
+        //To count the letters in the second word
+        foreach (var c in w2)
+        {
+            if (!counts.ContainsKey(c))
+            return false;
+            counts[c]--;
+            if (counts[c] < 0)
+            return false;
+        }
+        //If its cero, then we have an anagram
+        return true;
     }
+        // TODO Problem 3 - ADD YOUR CODE HERE
+        
 
     /// <summary>
     /// This function will read JSON (Javascript Object Notation) data from the 
@@ -101,6 +166,21 @@ public static class SetsAndMaps
         // on those classes so that the call to Deserialize above works properly.
         // 2. Add code below to create a string out each place a earthquake has happened today and its magitude.
         // 3. Return an array of these string descriptions.
-        return [];
-    }
+        var summaries = new List<string>();
+    
+        if (featureCollection?.Features != null)
+        {
+            foreach (var feature in featureCollection.Features)
+            {
+                if (feature.Properties != null)
+                {
+                    var summary = $"{feature.Properties.Place} - Mag {feature.Properties.Mag}";
+                    summaries.Add(summary);
+                }
+            }
+        }
+        
+        return summaries.ToArray();
+    
+        }
 }
